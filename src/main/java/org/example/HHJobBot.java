@@ -1,5 +1,6 @@
 package org.example;
 
+import lombok.Value;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -18,6 +19,14 @@ public class HHJobBot extends TelegramLongPollingBot {
     private final Map<Long, List<Vacancy>> lastSearches = new ConcurrentHashMap<>();
     private final HHApiService hhApiService = new HHApiService();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+    private final String botToken;
+    private final String botUsername;
+
+    public HHJobBot(String botToken, String botUsername) {
+        this.botToken = botToken;
+        this.botUsername = botUsername;
+    }
 
     public enum State {
         IDLE, AWAITING_PROFESSION, AWAITING_EXPERIENCE, AWAITING_SKILLS,
@@ -51,12 +60,12 @@ public class HHJobBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "HhSearchJobBot";
+        return botUsername;
     }
 
     @Override
     public String getBotToken() {
-        return "7614102307:AAH9-CbDZOxMnyd-CA7mybZPpplQ_I-_i38";
+        return botToken;
     }
 
     @Override
